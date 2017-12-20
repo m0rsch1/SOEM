@@ -49,7 +49,8 @@ include_directories(osal)
 include_directories(osal/${OS})
 include_directories(oshw/${OS})
 
-add_library(soem STATIC
+#add_library(soem STATIC
+add_library(soem SHARED
   ${SOEM_SOURCES}
   ${OSAL_SOURCES}
   ${OSHW_SOURCES}
@@ -66,3 +67,10 @@ install(FILES
 add_subdirectory(test/linux/slaveinfo)
 add_subdirectory(test/linux/eepromtool)
 add_subdirectory(test/linux/simple_test)
+
+# Let others find this library via pkg-config
+set(TARGET_NAME "soem")
+configure_file(${CMAKE_CURRENT_SOURCE_DIR}/soem.pc.in
+            ${CMAKE_CURRENT_BINARY_DIR}/soem.pc @ONLY)
+install(FILES ${CMAKE_CURRENT_BINARY_DIR}/soem.pc
+        DESTINATION lib/pkgconfig)
